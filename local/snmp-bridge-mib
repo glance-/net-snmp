@@ -284,10 +284,10 @@ sub createbaseinfo()
 {
 	my $bridge = shift;
 
-	$oid=".1.3.6.1.2.1.17.1.1";
+	$oid=".1.3.6.1.2.1.17.1.1.0";
 	$oid_value{$oid}=mac2hex(readfile($netdir.$bridge."/address", 0));
 	$oid_type{$oid}=ASN_OCTET_STR;
-	$oid_next{$oid}=".1.3.6.1.2.1.17.1.2";
+	$oid_next{$oid}=".1.3.6.1.2.1.17.1.2.0";
 
 	opendir(DIR, $netdir.$bridge."/brif/") or die "Could not open ".$netdir.$bridge."brif !\n";
 
@@ -301,12 +301,12 @@ sub createbaseinfo()
 
 	closedir(DIR);
 
-	$oid=".1.3.6.1.2.1.17.1.2";
+	$oid=".1.3.6.1.2.1.17.1.2.0";
 	$oid_value{$oid}=$ports;
 	$oid_type{$oid}=ASN_INTEGER;
-	$oid_next{$oid}=".1.3.6.1.2.1.17.1.3";
+	$oid_next{$oid}=".1.3.6.1.2.1.17.1.3.0";
 
-	$oid=".1.3.6.1.2.1.17.1.3";
+	$oid=".1.3.6.1.2.1.17.1.3.0";
 	$oid_value{$oid}="2";	# transparent only
 	$oid_type{$oid}=ASN_INTEGER;
 	$oid_next{$oid}=".1.3.6.1.2.1.17.1.4.1.1.1";
@@ -417,68 +417,68 @@ sub stpproperties()
 	my $bridge = shift;
 	my $dir = $netdir.$bridge."/bridge/";
 
-	@stpprops = ( { oid => ".1.3.6.1.2.1.17.2.1",
+	@stpprops = ( { oid => ".1.3.6.1.2.1.17.2.1.0",
 			flags => STP_PROP_VALUE,
 			value => "3",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.2" },
-			{ oid => ".1.3.6.1.2.1.17.2.2",
+			nextoid => ".1.3.6.1.2.1.17.2.2.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.2.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."priority",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.3" },
-			{ oid => ".1.3.6.1.2.1.17.2.3",
+			nextoid => ".1.3.6.1.2.1.17.2.3.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.3.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."topology_change_timer",
 			type => ASN_TIMETICKS,
-			nextoid => ".1.3.6.1.2.1.17.2.4" },
-			{ oid => ".1.3.6.1.2.1.17.2.4",
+			nextoid => ".1.3.6.1.2.1.17.2.4.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.4.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."topology_change",
 			type => ASN_COUNTER,
-			nextoid => ".1.3.6.1.2.1.17.2.5" },
-			{ oid => ".1.3.6.1.2.1.17.2.5",
+			nextoid => ".1.3.6.1.2.1.17.2.5.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.5.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."root_id",
 			type => ASN_OCTET_STR,
-			nextoid => ".1.3.6.1.2.1.17.2.6" },
-			{ oid => ".1.3.6.1.2.1.17.2.6",
+			nextoid => ".1.3.6.1.2.1.17.2.6.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.6.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."root_path_cost",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.7" },
-			{ oid => ".1.3.6.1.2.1.17.2.7",
+			nextoid => ".1.3.6.1.2.1.17.2.7.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.7.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."root_port",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.8" },
-			{ oid => ".1.3.6.1.2.1.17.2.8",
+			nextoid => ".1.3.6.1.2.1.17.2.8.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.8.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."max_age",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.9" },
-			{ oid => ".1.3.6.1.2.1.17.2.9",
+			nextoid => ".1.3.6.1.2.1.17.2.9.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.9.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."hello_time",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.11" },
+			nextoid => ".1.3.6.1.2.1.17.2.11.0" },
 			# TODO ...17.2.10
-			{ oid => ".1.3.6.1.2.1.17.2.11",
+			{ oid => ".1.3.6.1.2.1.17.2.11.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."forward_delay",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.12" },
-			{ oid => ".1.3.6.1.2.1.17.2.12",
+			nextoid => ".1.3.6.1.2.1.17.2.12.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.12.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."max_age",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.13" },
-			{ oid => ".1.3.6.1.2.1.17.2.13",
+			nextoid => ".1.3.6.1.2.1.17.2.13.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.13.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."hello_time",
 			type => ASN_INTEGER,
-			nextoid => ".1.3.6.1.2.1.17.2.14" },
-			{ oid => ".1.3.6.1.2.1.17.2.14",
+			nextoid => ".1.3.6.1.2.1.17.2.14.0" },
+			{ oid => ".1.3.6.1.2.1.17.2.14.0",
 			flags => STP_PROP_FILE | STP_PROP_DEC,
 			value => $dir."forward_delay",
 			type => ASN_INTEGER,
