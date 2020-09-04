@@ -55,6 +55,7 @@ my $targetbridge;
 
 my $cache_timout=60;
 my $last_populated=0;
+my $last_populated_stack=0;
 
 my $regoid = ".1.3.6.1.2.1.17";
 # are we running embedded ? If not, register as subagent
@@ -78,6 +79,7 @@ if (!$agent) {
 }
 
 $agent->register("dot1qbridge", ".1.3.6.1.2.1.17", \&request_handler) or die "registration of handler failed !\n";
+$agent->register("ifStackTable", ".1.3.6.1.2.1.31.1.2", \&request_handler) or die "registration of handler failed !\n";
 
 my $running;
 if ($subagent) {
@@ -112,6 +114,7 @@ sub request_handler {
 	my $request;
 
 	populate_mib($targetbridge);
+	populate_mib_stack($targetbridge);
 
 	for(my $request = $requests; $request; $request = $request->next()) {
 		if($request_info->getMode() == MODE_GET) {
@@ -121,6 +124,31 @@ sub request_handler {
 		} else {
 			print STDERR "mode not implemented.\n";
 		}
+	}
+}
+
+sub populate_mib_stack($) {
+	my $now;
+	my $bridge = shift;
+	my $seconds_passed_stack;
+
+	$now=time();
+	$seconds_passed_stack=$now-$last_populated_stack;
+	return if($seconds_passed_stack <= $cache_timout);
+	$last_populated_stack=$now;
+
+	# first populated oid
+	my $prev =     ".1.3.6.1.2.1.31.1.2";
+	my $base_oid = ".1.3.6.1.2.1.31.1.2.1.3";
+
+	my $port_id_high = $indexes{$bridge}{$bridge};
+	foreach my $port_id_low (sort values %{$indexes{$bridge}}) {
+		next if $port_id_high == $port_id_low;
+		my $oid = "$base_oid.$port_id_high.$port_id_low";
+		$oid_next{$prev} = $oid;
+		$oid_type{$oid}=ASN_INTEGER;
+		$oid_value{$oid}=1; # active
+		$prev = $oid;
 	}
 }
 
@@ -140,7 +168,7 @@ sub find_next{
 	my ($prev, $prev_oid, $noid_oid);
 	if(!defined($nextoid) || !defined($oid_value{$nextoid})) {
 		# find the lowest OID whis is higher than $noid
-		$prev = ".1.3.6.1.2.1.18";
+		$prev = ".1.3.6.1.2.1.32";
 		$prev_oid = new NetSNMP::OID($prev);
 		$noid_oid = new NetSNMP::OID($noid);
 		#print "looking for next of $noid\n";
@@ -153,7 +181,7 @@ sub find_next{
 				$prev_oid = $candidate_oid;
 			}
 		}
-		if ($prev eq ".1.3.6.1.2.1.18") {
+		if ($prev eq ".1.3.6.1.2.1.32") {
 			return; # no OID higher than $noid found
 		}
 		$nextoid = $prev;
@@ -227,6 +255,7 @@ sub populate_mib {
 	$seconds_passed=$now-$last_populated;
 	return if($seconds_passed <= $cache_timout);
 	$last_populated=$now;
+	$last_populated_stack=0;
 
 	%oid_value=();
 	%oid_type=();
