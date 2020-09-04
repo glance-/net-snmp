@@ -61,20 +61,20 @@ my $regoid = ".1.3.6.1.2.1.17";
 # TODO: How will these work in embedded mode?
 my ($agent, $bridge);
 if (!$agent) {
-    $agent = new NetSNMP::agent('Name' => 'dot1qbridge',
+	$agent = new NetSNMP::agent('Name' => 'dot1qbridge',
 				'AgentX' => 1);
-    $subagent = 1;
-    if ( $#ARGV != 0) {
-	usage($0);
-	exit();
-    }
-    $targetbridge = $ARGV[0];
+	$subagent = 1;
+	if ( $#ARGV != 0) {
+		usage($0);
+		exit();
+	}
+	$targetbridge = $ARGV[0];
 } else {
-    if (!defined($bridge)) {
-	usage($0);
-	exit();
-    }
-    $targetbridge = $bridge;
+	if (!defined($bridge)) {
+		usage($0);
+		exit();
+	}
+	$targetbridge = $bridge;
 }
 
 $agent->register("dot1qbridge", ".1.3.6.1.2.1.17", \&request_handler) or die "registration of handler failed !\n";
@@ -223,10 +223,10 @@ sub populate_mib {
 	$ports=0;
 	$oid="";
 
-        $now=time();
+	$now=time();
 	$seconds_passed=$now-$last_populated;
-        return if($seconds_passed <= $cache_timout);
-        $last_populated=$now;
+	return if($seconds_passed <= $cache_timout);
+	$last_populated=$now;
 
 	%oid_value=();
 	%oid_type=();
@@ -326,7 +326,7 @@ sub createbaseinfo()
 sub createmacs()
 {
 	my $bridge = shift;
-        my $start_oid = $oid = ".1.3.6.1.2.1.17.4.3.1";
+	my $start_oid = $oid = ".1.3.6.1.2.1.17.4.3.1";
 
 	my $prv_mac_oid;
 	my $first_mac_oid;
@@ -1148,7 +1148,7 @@ sub mac2oid{
 }
 
 sub mac2hex{
-        my ($mac)=@_;
+	my ($mac)=@_;
 	my @decimals;
 	my @octets=split(/:/,$mac);
 
